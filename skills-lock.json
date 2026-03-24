@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "skills": {
+    "Frontend Responsive Design Standards": {
+      "source": "am-will/codex-skills",
+      "sourceType": "github",
+      "computedHash": "e01516e24ba086a603fdf753f9b4e428a3684fbf3010b9295352202fd3461fa8"
+    },
+    "astro": {
+      "source": "astrolicious/agent-skills",
+      "sourceType": "github",
+      "computedHash": "ab44e2f297b232ff433e219664ee7df199bd8dd1dff4b8ee42408b880e8d7359"
+    },
+    "astro-i18n": {
+      "source": "soborbo/claudeskills",
+      "sourceType": "github",
+      "computedHash": "b619b087dd8a25b37ee99a618bb21b83d429e5105f8c1162f80cac081650be22"
+    },
+    "brainstorming": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "computedHash": "576ee8b8c2e1b514b1eea2d152320e208e4187e44fa4ae923ad33142f25ee8d1"
+    },
+    "breakdown-feature-implementation": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "7fe64193429f501d63828fbbde0e20f4ee49e5254a3226ece7ff004bf8e7f348"
+    },
+    "create-implementation-plan": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "4764bacd34af8e5c27a85ca01a90197afcf1f1ed1785975ba91d9b80dff60e2d"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "computedHash": "25872a21881a950edc3db1f3329664d60405d539660ce05b3265db2de06a7dfd"
+    },
+    "framer-motion-animator": {
+      "source": "patricio0312rev/skills",
+      "sourceType": "github",
+      "computedHash": "22a8401fab0cdf32d5c153b98aba5e95435a479810896879535dc7ac3710efbe"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "svg-illustration": {
+      "source": "narumiruna/agent-skills",
+      "sourceType": "github",
+      "computedHash": "531e32d0c78d4bbca057c468651cc04e42af1635802e1f02ac88dce570a602fa"
+    }
+  }
+}

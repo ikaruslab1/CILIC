@@ -1,0 +1,351 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import TileGridBackground from "./TileGridBackground.tsx";
+
+interface Props {
+  title?: string;
+  hideCountdown?: boolean;
+  isCompact?: boolean;
+}
+
+const { title, hideCountdown = false, isCompact = false } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<header id="home" class:list={["hero", { "hero-compact": isCompact }]}>
+  <TileGridBackground client:load />
+  
+  <div class="container hero-content">
+    <div class="hero-text animate-fade-in">
+      <div class="hero-text-shield"></div>
+      <h1>
+        {title ? (
+          <span class="title-accent">{title}</span>
+        ) : (
+          <>
+            <span class="title-top">{t("hero.title_line1")}</span>
+            <span class="title-accent">{t("hero.title_accent")}</span>
+            <span class="title-bottom">{t("hero.title_line2")}</span>
+          </>
+        )}
+      </h1>
+      <p class="date">{t("hero.date")}</p>
+
+      <div class="cta-group">
+        <button class="btn btn-primary btn-register-trigger">{t("hero.register")}</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  {!hideCountdown && (
+    <div class="countdown-anchor">
+      <div
+        class="countdown-container animate-fade-in"
+        style="animation-delay: 0.2s"
+      >
+        <h3 class="countdown-title">{t("countdown.eventTime")}</h3>
+        <div id="countdown" class="countdown">
+          <div class="countdown-item">
+            <span id="days" class="count">00</span>
+            <span class="label">{t("countdown.days")}</span>
+          </div>
+          <div class="countdown-item">
+            <span id="hours" class="count">00</span>
+            <span class="label">{t("countdown.hours")}</span>
+          </div>
+          <div class="countdown-item">
+            <span id="minutes" class="count">00</span>
+            <span class="label">{t("countdown.minutes")}</span>
+          </div>
+          <div class="countdown-item">
+            <span id="seconds" class="count">00</span>
+            <span class="label">{t("countdown.seconds")}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</header>
+
+<script is:inline>
+  const targetDate = new Date("May 12, 2026 09:00:00").getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    const countdownEl = document.getElementById("countdown");
+    if (!countdownEl) return;
+
+    if (distance < 0) {
+      countdownEl.innerHTML = "EVENT STARTED";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+    );
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+
+    if (daysEl) daysEl.innerText = String(days).padStart(2, "0");
+    if (hoursEl) hoursEl.innerText = String(hours).padStart(2, "0");
+    if (minutesEl) minutesEl.innerText = String(minutes).padStart(2, "0");
+    if (secondsEl) secondsEl.innerText = String(seconds).padStart(2, "0");
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 850px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-main);
+    padding-top: 80px;
+    padding-bottom: 15vh;
+    overflow: visible;
+    background: #ffffff; /* Solid white */
+  }
+
+  .hero-compact {
+    height: 60vh;
+    min-height: 500px;
+    padding-bottom: 5vh;
+  }
+
+
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-text {
+    position: relative;
+  }
+
+  .hero-text-shield {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(800px, 120vw);
+    height: min(600px, 80vh);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 30%, transparent 70%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    margin-bottom: 20px;
+  }
+
+  .edition {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    opacity: 0.8;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5.5vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 10px; /* Reducido drásticamente */
+    font-weight: 800;
+    color: #333;
+    max-width: 1000px;
+  }
+
+  .title-accent {
+    color: var(--primary);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .title-top {
+    display: block;
+    font-size: 0.72em; /* slightly smaller than accent */
+    font-weight: 700;
+    color: #444;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .title-bottom {
+    display: block;
+    font-weight: 800;
+  }
+
+  .date {
+    font-size: 1.6rem;
+    color: #555;
+    margin: 20px auto 45px; /* Margen superior reducido y equilibrado */
+    font-weight: 600;
+    position: relative;
+    padding-top: 20px; /* Igual al margen superior para centrado exacto */
+    display: inline-block;
+  }
+
+  .date::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(300px, 80vw);
+    height: 6px; /* Forma de rectángulo (más alto) */
+    background: var(--primary);
+    opacity: 0.8; /* Más sólido */
+    border-radius: 2px;
+    top: 0;
+  }
+
+  .cta-group {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    font-weight: 700;
+    padding: 18px 50px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(50, 55, 140, 0.2);
+    transition: var(--transition);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(50, 55, 140, 0.3);
+  }
+
+
+
+  /* Countdown Centered 50/50 Overlap */
+  .countdown-anchor {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    transform: translateY(50%);
+    z-index: 100;
+    padding: 0 40px;
+  }
+
+  .countdown-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 45px 70px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .countdown-title {
+    margin-bottom: 30px;
+    font-size: 0.9rem;
+    letter-spacing: 5px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .countdown {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+  }
+
+  .count {
+    font-size: 4rem;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    line-height: 1;
+    color: var(--primary);
+  }
+
+  .label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 15px;
+    color: var(--text-muted);
+    font-weight: 700;
+    display: block;
+  }
+
+  @media (max-width: 992px) {
+    .hero {
+      padding-top: 12vh;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+    }
+    .countdown-container {
+      padding: 35px;
+    }
+    .count {
+      font-size: 3rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-top: 10vh;
+    }
+    h1 {
+      font-size: clamp(1.6rem, 7vw, 2.6rem);
+    }
+    .title-top {
+      font-size: 0.75em;
+    }
+    .countdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 {
+      font-size: clamp(1.4rem, 8vw, 2rem);
+    }
+    .title-top {
+      font-size: 0.78em;
+    }
+  }
+</style>

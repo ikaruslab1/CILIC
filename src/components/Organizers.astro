@@ -1,0 +1,123 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const organizers = [
+  "UNAM Nuestra gran Universidad",
+  "Facultad de Estudios Superiores Acatlán",
+  "División de Diseño y Edificación Programa de Arquitectura",
+  "Fordham Urban Law Center",
+  "CJUR",
+  "UN-HABITAT"
+];
+---
+
+<section id="organizers" class="organizers">
+  <div class="container text-center">
+    <div class="section-header text-center">
+      <span class="sub">{t('nav.organizers')}</span>
+      <h2>{t('organizers.title')}</h2>
+      <div class="decorative-line mx-auto"></div>
+    </div>
+    
+    <div class="organizers-grid">
+      {organizers.map(org => (
+        <div class="organizer-item">
+          <div class="org-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+          </div>
+          <p>{org}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .organizers {
+    background: var(--bg-light);
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .section-header {
+    margin-bottom: 80px;
+  }
+
+  .section-header h2 {
+    font-size: 2.5rem;
+    margin-top: 15px;
+    color: var(--primary-dark);
+  }
+
+  .sub {
+    color: var(--accent);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .decorative-line {
+    width: 60px;
+    height: 4px;
+    background: var(--accent-dark);
+    margin: 20px auto 0;
+  }
+
+  .organizers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+  }
+
+  .organizer-item {
+    padding: 40px;
+    background: var(--secondary);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  }
+
+  .organizer-item:hover {
+    transform: translateY(-10px);
+    background: var(--secondary);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    border-color: var(--accent);
+  }
+
+  .org-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--primary-dark);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 20px rgba(37, 35, 89, 0.2);
+  }
+
+  .organizer-item p {
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--primary-dark);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .organizers-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

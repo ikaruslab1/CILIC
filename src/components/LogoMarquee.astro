@@ -1,0 +1,124 @@
+---
+const logos = [
+  { src: "/logos/unam.svg", alt: "UNAM" },
+  { src: "/logos/fesa.svg", alt: "FESA" },
+  { src: "/logos/ULC.svg", alt: "ULC" },
+  { src: "/logos/Rdos.svg", alt: "Instuto" },
+];
+---
+
+<section class="marquee-section">
+  <div class="marquee-container">
+    <div class="marquee-content">
+      {/* Prime cycle */}
+      {
+        logos.map((logo) => (
+          <a href="#" class="logo-btn">
+            <img src={logo.src} alt={logo.alt} title={logo.alt} />
+          </a>
+        ))
+      }
+
+      {/* Duplicate to ensure continuous loop */}
+      {
+        logos.map((logo) => (
+          <a href="#" class="logo-btn">
+            <img src={logo.src} alt={logo.alt} title={logo.alt} />
+          </a>
+        ))
+      }
+
+      {/* Triplicate to ensure smooth transitions on large screens */}
+      {
+        logos.map((logo) => (
+          <a href="#" class="logo-btn">
+            <img src={logo.src} alt={logo.alt} title={logo.alt} />
+          </a>
+        ))
+      }
+
+      {/* Quadruplicate for safety on ultrawide */}
+      {
+        logos.map((logo) => (
+          <a href="#" class="logo-btn">
+            <img src={logo.src} alt={logo.alt} title={logo.alt} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee-section {
+    background: #ffffff;
+    padding: 80px 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  }
+
+  .marquee-container {
+    display: flex;
+    white-space: nowrap;
+    position: relative;
+    width: 100%;
+  }
+
+  .marquee-content {
+    display: flex;
+    gap: 120px;
+    animation: scroll-ltr 40s linear infinite;
+    padding-left: 120px;
+    align-items: center;
+  }
+
+  .logo-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    filter: grayscale(1);
+    opacity: 0.5;
+    background: transparent;
+    padding: 0;
+  }
+
+  .logo-btn:hover {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .logo-btn img {
+    height: 60px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+  }
+
+  @keyframes scroll-ltr {
+    0% {
+      transform: translateX(
+        -25%
+      ); /* Since we have 4 copies, 25% represents one full loop if we adjust correctly */
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  /* To make math easier, let's use a simpler approach if the translateX value is tricky. 
+     Actually, if we have N items repeated M times, we want to translate exactly the width of N items. 
+  */
+
+  @media (max-width: 768px) {
+    .logo-btn img {
+      height: 45px;
+      max-width: 140px;
+    }
+    .marquee-content {
+      gap: 60px;
+    }
+  }
+</style>

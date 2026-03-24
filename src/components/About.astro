@@ -1,0 +1,76 @@
+---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="about" class="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="section-header">
+        <span class="sub">{t('nav.about')}</span>
+        <h2>{t('about.title')}</h2>
+        <div class="decorative-line"></div>
+      </div>
+      <div class="about-text">
+        <p>{t('about.description')}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background-color: var(--bg-light);
+    padding-top: 180px; /* Increased to give space to the overlapping countdown */
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+
+  .section-header h2 {
+    font-size: 3rem;
+    margin: 20px 0;
+    line-height: 1.1;
+    color: var(--primary-dark);
+  }
+
+  .sub {
+    color: var(--primary); /* Changed to primary blue */
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 1rem;
+  }
+
+  .decorative-line {
+    width: 60px;
+    height: 4px;
+    background: var(--primary); /* Changed to primary blue */
+    margin-top: 10px;
+  }
+
+  .about-text {
+    font-size: 1.25rem;
+    color: var(--text-main);
+    font-weight: 400;
+  }
+
+  @media (max-width: 992px) {
+    .about {
+      padding-top: 100px; /* Reset on mobile where countdown is not overlapping in the same way */
+    }
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .section-header h2 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
