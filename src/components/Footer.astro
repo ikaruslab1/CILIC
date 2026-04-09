@@ -1,102 +1,59 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-
-const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <div class="logo">
-        <span class="logo-main">Logo</span>
-        <span class="logo-sub">2026</span>
-      </div>
-    </div>
-
-    <div class="footer-info">
-      <p class="legal-note">{t("footer.legal")}</p>
-      <p class="copyright">© {year} CILUC. All rights reserved.</p>
-    </div>
+  <div class="container footer-content">
+    <p>Hecho en México, todos los derechos reservados 2026.</p>
+    <p>
+      Esta página puede ser reproducida con fines no lucrativos, siempre y cuando
+      no se mutile, se cite la fuente completa y su dirección electrónica. De
+      otra forma, requiere permiso previo por escrito de la institución.
+    </p>
+    <p>
+      Sitio web administrado por: <strong>Facultad de Estudios Superiores Acatlán</strong>
+    </p>
   </div>
 </footer>
 
+
 <style>
   .footer {
-    background: var(--primary-dark); /* Use Dark Blue for Footer */
-    padding: 80px 20px;
+    background: var(--primary-dark);
+    padding: 60px 20px;
     color: var(--secondary);
-    border-top: 4px solid var(--accent-dark); /* Add Dark Gold top border */
+    border-top: 4px solid var(--accent-dark);
+    text-align: center;
   }
 
-  .footer-grid {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 40px;
-  }
-
-  .logo {
+  .footer-content {
+    max-width: 900px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    color: var(--secondary);
-    font-family: var(--font-heading);
-    line-height: 1;
-    margin-bottom: 20px;
+    gap: 1.5rem;
   }
 
-  .logo-main {
-    font-size: 2.5rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-  }
-
-  .logo-sub {
-    font-size: 1rem;
-    color: var(--accent); /* Naranja Dorado for visibility */
-    letter-spacing: 8px;
-    margin-top: 5px;
-    font-weight: 800;
-  }
-
-  .brand-desc {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: var(--accent-dark); /* Dark Gold for subtle branding */
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .footer-info {
-    text-align: right;
-  }
-
-  .legal-note {
-    font-size: 0.85rem;
-    opacity: 0.7;
-    margin-bottom: 15px;
-    max-width: 400px;
+  .footer-content p {
+    font-size: 0.9rem;
     line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+    font-weight: 400;
   }
 
-  .copyright {
-    font-size: 0.8rem;
-    opacity: 0.5;
-    font-weight: 600;
+  strong {
+    color: var(--accent);
+    font-weight: 700;
   }
 
   @media (max-width: 768px) {
-    .footer-grid {
-      flex-direction: column;
-      text-align: center;
+    .footer {
+      padding: 40px 20px;
     }
-    .footer-info {
-      text-align: center;
-    }
-    .legal-note {
-      margin: 0 auto 15px;
+    
+    .footer-content p {
+      font-size: 0.85rem;
     }
   }
 </style>
+

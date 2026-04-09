@@ -6,15 +6,16 @@ interface Props {
   title?: string;
   hideCountdown?: boolean;
   isCompact?: boolean;
+  isExtraCompact?: boolean;
 }
 
-const { title, hideCountdown = false, isCompact = false } = Astro.props;
+const { title, hideCountdown = false, isCompact = false, isExtraCompact = false } = Astro.props;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<header id="home" class:list={["hero", { "hero-compact": isCompact }]}>
+<header id="home" class:list={["hero", { "hero-compact": isCompact, "hero-extra-compact": isExtraCompact }]}>
   <TileGridBackground client:load />
   
   <div class="container hero-content">
@@ -128,6 +129,12 @@ const t = useTranslations(lang);
     height: 60vh;
     min-height: 500px;
     padding-bottom: 5vh;
+  }
+
+  .hero-extra-compact {
+    height: 40vh;
+    min-height: 350px;
+    padding-bottom: 2vh;
   }
 
 
