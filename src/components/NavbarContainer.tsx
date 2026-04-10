@@ -16,9 +16,10 @@ interface Props {
     logoSub: string;
     toggleMenu: string;
   };
+  logoUrl: string;
 }
 
-const NavbarContainer: React.FC<Props> = ({ navItems, lang, languageLinks, languages, labels }) => {
+const NavbarContainer: React.FC<Props> = ({ navItems, lang, languageLinks, languages, labels, logoUrl }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const { scrollY } = useScroll();
@@ -95,10 +96,9 @@ const NavbarContainer: React.FC<Props> = ({ navItems, lang, languageLinks, langu
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
       <div className="container nav-content">
-        <div className="logo">
-          <span className="logo-main">{labels.logoMain}</span>
-          <span className="logo-sub">{labels.logoSub}</span>
-        </div>
+        <a href={navItems[0]?.href || "#"} className="logo">
+          <img src={logoUrl} alt="FESA Logo" className="logo-img" />
+        </a>
 
         {/* Desktop Nav */}
         <div className="nav-links-desktop">

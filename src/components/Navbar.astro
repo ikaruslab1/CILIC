@@ -1,44 +1,20 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { getLangFromUrl, useTranslations, getRelativeLink } from "../i18n/utils";
 import { languages } from "../i18n/ui";
 import NavbarContainer from "./NavbarContainer";
-import path from 'node:path';
 
 const lang = getLangFromUrl(Astro.url);
 const currentPath = Astro.url.pathname;
 const t = useTranslations(lang);
 
-// A helper to make URLs relative to the current path and ensure they point to index.html
-const getRelativeLink = (target: string) => {
-  let absoluteTarget = target;
-  if (target.endsWith('/')) {
-    absoluteTarget += 'index.html';
-  } else if (!target.includes('.') && !target.includes('#')) {
-    // If it's a directory-like path without dot or hash, assume it's a route
-    absoluteTarget += '/index.html';
-  }
-  
-  // Normalize double slashes
-  absoluteTarget = absoluteTarget.replace(/\/+/g, '/');
-  
-  // We need to calculate relative to the directory of the current file
-  // Astro.url.pathname for /es/ is /es/
-  const currentDir = currentPath.endsWith('/') ? currentPath : path.posix.dirname(currentPath);
-  
-  let rel = path.posix.relative(currentDir, absoluteTarget);
-  
-  // If we are at /es/ and target is /es/index.html, rel might be 'index.html'
-  if (rel === '') rel = 'index.html';
-  
-  return rel;
-};
-
 const navItems = [
-  { href: getRelativeLink(`/${lang}/`), label: t("nav.home") },
-  { href: getRelativeLink(`/${lang}/programa/`), label: t("nav.program") },
-  { href: getRelativeLink(`/${lang}/alojamiento/`), label: t("nav.accommodation") },
-  { href: getRelativeLink(`/${lang}/sede/`), label: t("nav.sede") },
+  { href: getRelativeLink(Astro.url, `/${lang}/`), label: t("nav.home") },
+  { href: getRelativeLink(Astro.url, `/${lang}/programa/`), label: t("nav.program") },
+  { href: getRelativeLink(Astro.url, `/${lang}/alojamiento/`), label: t("nav.accommodation") },
+  { href: getRelativeLink(Astro.url, `/${lang}/sede/`), label: t("nav.sede") },
 ];
+
+const logoUrl = getRelativeLink(Astro.url, '/logos/fesa.svg');
 
 
 const labels = {
@@ -59,7 +35,7 @@ Object.keys(languages).forEach((l) => {
   }
   
   if (!targetPath.endsWith('/')) targetPath += '/';
-  languageLinks[l] = getRelativeLink(targetPath);
+  languageLinks[l] = getRelativeLink(Astro.url, targetPath);
 });
 
 ---
@@ -71,6 +47,7 @@ Object.keys(languages).forEach((l) => {
   languageLinks={languageLinks}
   languages={languages}
   labels={labels}
+  logoUrl={logoUrl}
 />
 
 <style is:global>
@@ -102,11 +79,20 @@ Object.keys(languages).forEach((l) => {
 
   .logo {
     display: flex;
-    flex-direction: column;
-    color: var(--primary);
-    font-family: var(--font-heading);
-    line-height: 1;
+    align-items: center;
+    height: 100%;
     flex-shrink: 0;
+  }
+
+  .logo-img {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .logo-img:hover {
+    transform: scale(1.05);
   }
 
   .logo-main {
