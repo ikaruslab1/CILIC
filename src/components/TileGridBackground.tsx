@@ -18,7 +18,7 @@ interface TileGridBackgroundProps {
 export default function TileGridBackground({
   tileSize = 44,
 }: TileGridBackgroundProps) {
-  const [dimensions, setDimensions] = useState({ cols: 0, rows: 0 });
+  const [dimensions, setDimensions] = useState({ cols: 0, rows: 0, actualSize: tileSize });
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -29,13 +29,14 @@ export default function TileGridBackground({
       // Hero has a min-height of 850px, so we ensure we cover at least that
       const height = Math.max(window.innerHeight, 1000);
 
-      const tileWidth = tileSize;
-      const tileHeight = tileSize * 1.5;
+      const actualSize = width <= 768 ? Math.max(tileSize * 0.5, 20) : tileSize;
+      const tileWidth = actualSize;
+      const tileHeight = actualSize * 1.5;
 
       const cols = Math.ceil(width / tileWidth);
       const rows = Math.ceil(height / tileHeight);
 
-      setDimensions({ cols, rows });
+      setDimensions({ cols, rows, actualSize });
     };
 
     updateDimensions();
@@ -63,8 +64,8 @@ export default function TileGridBackground({
 
         list.push({
           id: `${r}-${c}`,
-          x: c * tileSize,
-          y: r * (tileSize * 1.5),
+          x: c * dimensions.actualSize,
+          y: r * (dimensions.actualSize * 1.5),
           delay,
           isSlow,
           slowDuration,
@@ -99,8 +100,8 @@ export default function TileGridBackground({
             key={tile.id}
             x={tile.x}
             y={tile.y}
-            width={tileSize}
-            height={tileSize * 1.5}
+            width={dimensions.actualSize}
+            height={dimensions.actualSize * 1.5}
             fill={tile.isYellow ? "#fff4cc" : "#e6f0ff"} /* Light yellow or light blue */
             stroke="#ffffff" /* Creates a natural gap on a white background */
             strokeWidth="1"
@@ -113,7 +114,7 @@ export default function TileGridBackground({
               delay: tile.delay,
             }}
             style={{ 
-              transformOrigin: `${tile.x + tileSize / 2}px ${tile.y + (tileSize * 1.5) / 2}px`
+              transformOrigin: `${tile.x + dimensions.actualSize / 2}px ${tile.y + (dimensions.actualSize * 1.5) / 2}px`
             }}
           />
         ))}

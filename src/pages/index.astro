@@ -1,3 +1,33 @@
 ---
+// src/pages/index.astro
 ---
-<meta http-equiv="refresh" content="0;url=./es/" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ikarus CILUC - Redirecting...</title>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=es/index.html" />
+  </noscript>
+  <script>
+    const savedLang = localStorage.getItem('ciluc_lang');
+    const validLangs = ['es', 'en'];
+    let targetLang = 'es'; // default
+
+    if (savedLang && validLangs.includes(savedLang)) {
+      targetLang = savedLang;
+    } else {
+      const browserLang = navigator.language.split('-')[0];
+      if (validLangs.includes(browserLang)) {
+        targetLang = browserLang;
+      }
+    }
+    
+    // Using relative path for the redirect
+    window.location.replace(`${targetLang}/index.html`);
+  </script>
+</head>
+<body>
+</body>
+</html>

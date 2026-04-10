@@ -2,27 +2,73 @@
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { languages } from "../i18n/ui";
 import NavbarContainer from "./NavbarContainer";
+import path from 'node:path';
 
 const lang = getLangFromUrl(Astro.url);
+const currentPath = Astro.url.pathname;
 const t = useTranslations(lang);
 
+// A helper to make URLs relative to the current path and ensure they point to index.html
+const getRelativeLink = (target: string) => {
+  let absoluteTarget = target;
+  if (target.endsWith('/')) {
+    absoluteTarget += 'index.html';
+  } else if (!target.includes('.') && !target.includes('#')) {
+    // If it's a directory-like path without dot or hash, assume it's a route
+    absoluteTarget += '/index.html';
+  }
+  
+  // Normalize double slashes
+  absoluteTarget = absoluteTarget.replace(/\/+/g, '/');
+  
+  // We need to calculate relative to the directory of the current file
+  // Astro.url.pathname for /es/ is /es/
+  const currentDir = currentPath.endsWith('/') ? currentPath : path.posix.dirname(currentPath);
+  
+  let rel = path.posix.relative(currentDir, absoluteTarget);
+  
+  // If we are at /es/ and target is /es/index.html, rel might be 'index.html'
+  if (rel === '') rel = 'index.html';
+  
+  return rel;
+};
+
 const navItems = [
-  { href: `/${lang}/`, label: t("nav.home") },
-  { href: `/${lang}/programa`, label: t("nav.program") },
-  { href: `/${lang}/alojamiento`, label: t("nav.accommodation") },
+  { href: getRelativeLink(`/${lang}/`), label: t("nav.home") },
+  { href: getRelativeLink(`/${lang}/programa/`), label: t("nav.program") },
+  { href: getRelativeLink(`/${lang}/alojamiento/`), label: t("nav.accommodation") },
+  { href: getRelativeLink(`/${lang}/sede/`), label: t("nav.sede") },
 ];
+
 
 const labels = {
   logoMain: "CILUC",
   logoSub: "2026",
   toggleMenu: "Toggle Menu",
 };
+
+// Generate relative links for language switcher
+const languageLinks: Record<string, string> = {};
+Object.keys(languages).forEach((l) => {
+  const targetPrefix = `/${l}/`;
+  const currentLangPrefix = `/${lang}/`;
+  let targetPath = `/${l}/`;
+  
+  if (currentPath.startsWith(currentLangPrefix) || currentPath === currentLangPrefix.slice(0, -1)) {
+    targetPath = currentPath.replace(new RegExp(`^${currentLangPrefix}`), targetPrefix);
+  }
+  
+  if (!targetPath.endsWith('/')) targetPath += '/';
+  languageLinks[l] = getRelativeLink(targetPath);
+});
+
 ---
 
 <NavbarContainer 
   client:load 
   navItems={navItems} 
   lang={lang} 
+  languageLinks={languageLinks}
   languages={languages}
   labels={labels}
 />
@@ -262,6 +308,26 @@ const labels = {
 
     .mobile-toggle-btn {
       display: block;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .navbar-wrapper {
+      height: 65px;
+    }
+    
+    .nav-content {
+      padding: 0 20px;
+    }
+    
+    .logo-main {
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+    }
+    
+    .logo-sub {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
     }
   }
 </style>

@@ -9,6 +9,7 @@ interface NavItem {
 interface Props {
   navItems: NavItem[];
   lang: string;
+  languageLinks: Record<string, string>;
   languages: Record<string, string>;
   labels: {
     logoMain: string;
@@ -17,7 +18,7 @@ interface Props {
   };
 }
 
-const NavbarContainer: React.FC<Props> = ({ navItems, lang, languages, labels }) => {
+const NavbarContainer: React.FC<Props> = ({ navItems, lang, languageLinks, languages, labels }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const { scrollY } = useScroll();
@@ -54,6 +55,12 @@ const NavbarContainer: React.FC<Props> = ({ navItems, lang, languages, labels })
   const navVariants: Variants = {
     visible: { y: 0, opacity: 1 },
     hidden: { y: -100, opacity: 0 },
+  };
+
+
+
+  const handleLanguageChange = (targetLang: string) => {
+    localStorage.setItem('ciluc_lang', targetLang);
   };
 
   const menuVariants: Variants = {
@@ -105,7 +112,12 @@ const NavbarContainer: React.FC<Props> = ({ navItems, lang, languages, labels })
             {Object.entries(languages).map(
               ([l, label]) =>
                 lang !== l && (
-                  <a key={l} href={`/${l}/`} className="btn-lang-nav">
+                  <a 
+                    key={l} 
+                    href={languageLinks[l] || '#'} 
+                    className="btn-lang-nav"
+                    onClick={() => handleLanguageChange(l)}
+                  >
                     {l.toUpperCase()}
                   </a>
                 )
@@ -154,9 +166,12 @@ const NavbarContainer: React.FC<Props> = ({ navItems, lang, languages, labels })
                 {Object.entries(languages).map(([l, label]) => (
                   <a
                     key={l}
-                    href={`/${l}/`}
+                    href={languageLinks[l] || '#'}
                     className={`mobile-btn-lang ${lang === l ? "active" : ""}`}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      handleLanguageChange(l);
+                      setIsOpen(false);
+                    }}
                   >
                     {label}
                   </a>

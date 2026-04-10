@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Navbar from "../../../components/Navbar.astro";
+import Hero from "../../../components/Hero.astro";
+import Footer from "../../../components/Footer.astro";
+import { ui } from "../../../i18n/ui";
+import { useTranslations } from "../../../i18n/utils";
+import SedeContent from "../../../components/SedeContent";
+
+export function getStaticPaths() {
+  return Object.keys(ui).map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as keyof typeof ui);
+---
+
+<BaseLayout
+  title={`${t("nav.sede")} | CILUC 2026`}
+  description="Centro de Estudios Municipales y Metropolitanos (CEMM) - Sede CILUC 2026"
+>
+  <Navbar />
+  <main>
+    <Hero title={t("nav.sede")} hideCountdown={true} isCompact={true} />
+    <SedeContent client:load lang={lang as string} />
+  </main>
+  <Footer />
+</BaseLayout>
